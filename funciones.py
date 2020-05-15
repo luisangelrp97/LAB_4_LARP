@@ -506,8 +506,161 @@ def esta_lidad():
     print("Media",j.mean())
     print("Varianza",j.var())
 
+#----------------------------------------------------------------------------------------------------------------------------------------------------
+# optimizacion 
 
+    "Parameters"
+    "----------"
+    "stoploss"
+   " takeprofit"
+   " volume"
+
+
+
+
+def optimi(stlp,tppl,volu):
+    sl=[]
+    tp=[]
+    volumen=[]
+    slp=[]
+    tpp=[]
+    valor_pip=.42/100000
+    for i in range(0,len(grupos)):
+        sl.append(stlp)
+        tp.append(tppl)
+        volumen.append(volu)
         
+        if escenarios[i]== "A":
+            operacion.append("Compra")
+            tpp.append(grupos[i]["Open"][0]+(valor_pip*tp[i]))
+            slp.append(grupos[i]["Open"][0]-(valor_pip*sl[i]))
+        elif escenarios[i] == "B":
+            operacion.append("Venta")
+            tpp.append(grupos[i]["Open"][0]-(valor_pip*tp[i]))
+            slp.append(grupos[i]["Open"][0]+(valor_pip*sl[i]))
+        elif escenarios[i]== ("C"):
+            operacion.append("Compra")
+            tpp.append(grupos[i]["Open"][0]+(valor_pip*tp[i]))
+            slp.append(grupos[i]["Open"][0]-(valor_pip*sl[i]))
+        else:
+            operacion.append("Venta")
+            tpp.append(grupos[i]["Open"][0]-(valor_pip*tp[i]))
+            slp.append(grupos[i]["Open"][0]+(valor_pip*sl[i]))
+            
+           
+    
+    la=[]
+    lo=[]
+    al=[]
+    co=[]
+    ca=[]
+    resultado=[]
+    pips=[]
+    capital=[]
+    capital_acm=[]
+    capital_sum=100000
+    for i  in range(0,len(grupos)):
+        take_profit=tpp[i]
+        take_profit=round(take_profit,4)
+        stop_lost=slp[i]
+        stop_lost=round(stop_lost,4)
+        close=grupos[i]["Close"].values.tolist()
+        
+        if operacion[i]== "Compra":
+            
+            high= grupos[i]["High"].values.tolist()
+            low= grupos[i]["Low"].values.tolist()
+            min_high=round(min(high),4)
+            la.append(min_high)
+            max_high=round(max(high),4)
+            lo.append(max_high)
+            min_low=round(min(low),4)
+            co.append(min_low)
+            max_low=round(max(low),4)
+            ca.append(max_low)
+            
+            if take_profit in np.arange(min_high,max_high,.0001):
+                pips.append((grupos[i]["Open"][0]-take_profit)*-10000)
+                capital.append((grupos[i]["Open"][0]-take_profit)*volumen[i]*-1)
+                capital_sum= capital_sum + ((grupos[i]["Open"][0]-take_profit)*volumen[i]*-1)
+                capital_acm.append(capital_sum)
+                resultado.append("ganada")
+                
+            elif stop_lost in np.arange(min_low,max_low,.0001):
+                pips.append((grupos[i]["Open"][0]-stop_lost)*10000)
+                resultado.append("perdedora")
+                capital.append((grupos[i]["Open"][0]-stop_lost)*volumen[i]*-1)
+                capital_sum= capital_sum + ((grupos[i]["Open"][0]-stop_lost)*volumen[i]*-1)
+                capital_acm.append(capital_sum)
+                
+            else:
+                if grupos[i]["Open"][0]<close[-1]:
+                    pips.append((grupos[i]["Open"][0]-close[-1])*-10000)
+                    capital.append((grupos[i]["Open"][0]-close[-1])*volumen[i]*-1)
+                    resultado.append("ganadora")
+                    capital_sum=capital_sum+ ((grupos[i]["Open"][0]-close[-1])*volumen[i]*-1)
+                    capital_acm.append(capital_sum)
+                    
+                    
+                
+                else:
+                    pips.append((grupos[i]["Open"][0]-close[-1])*10000)
+                    resultado.append("perdedora")
+                    capital.append((grupos[i]["Open"][0]-close[-1])*volumen[i]*-1)
+                    capital_sum= capital_sum + ((grupos[i]["Open"][0]-close[-1])*volumen[i]*-1)
+                    capital_acm.append(capital_sum)
+            
+        else:
+            
+            high= grupos[i]["High"].values.tolist()
+            low= grupos[i]["Low"].values.tolist()
+            min_high=round(min(high),4)
+            la.append(min_high)
+            max_high=round(max(high),4)
+            lo.append(max_high)
+            min_low=round(min(low),4)
+            co.append(min_low)
+            max_low=round(max(low),4)
+            ca.append(max_low)
+            
+            
+            if take_profit in np.arange(min_low,max_low,.0001):
+                al.append("tp venta")
+                pips.append((grupos[i]["Open"][0]-take_profit)*10000)
+                resultado.append("ganadora") 
+                capital.append((grupos[i]["Open"][0]-take_profit)*volumen[i])
+                capital_sum = capital_sum + ((grupos[i]["Open"][0]-take_profit)*volumen[i])
+                capital_acm.append(capital_sum)
+            elif stop_lost in np.arange(min_high,max_high,.0001):
+               
+                pips.append((grupos[i]["Open"][0]-stop_lost)*-10000)
+                resultado.append("perdedora")
+                capital.append((grupos[i]["Open"][0]-stop_lost)*volumen[i])
+                capital_sum= capital_sum + ((grupos[i]["Open"][0]-stop_lost)*volumen[i])
+                capital_acm.append(capital_sum)
+            else:
+                if grupos[i]["Open"][0]<close[-1]:
+                    pips.append((grupos[i]["Open"][0]-close[-1])*-10000)
+                    resultado.append("perdedora")
+                    capital.append((grupos[i]["Open"][0]-close[-1])*volumen[i])
+                    capital_sum= capital_sum + ((grupos[i]["Open"][0]-close[-1])*volumen[i])
+                    capital_acm.append(capital_sum)
+                else:
+                    pips.append((grupos[i]["Open"][0]-close[-1])*10000)
+                    resultado.append("ganadora") 
+                    capital.append((grupos[i]["Open"][0]-close[-1])*volumen[i])
+                    capital_sum = capital_sum + ((grupos[i]["Open"][0]-close[-1])*volumen[i])
+                    capital_acm.append(capital_sum)
+                   
+    df_backtest=pd.DataFrame(list(zip(a,escenarios,operacion,volumen,resultado,pips,capital,capital_acm)),
+                             columns=("Timestamp","Escenario","Operacion","Volumen","Resultado","Pips","Capital","Capital_acm"))
+           
+            
+    grafica_ca=plt.plot(df_backtest["Capital"])
+    
+    return df_backtest , grafica_ca , capital_sum
+    
+            
 
 
 
