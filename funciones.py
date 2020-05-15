@@ -4,6 +4,7 @@ Created on Wed Apr 29 15:10:28 2020
 
 @author: LARP
 """
+<<<<<<< HEAD
 import pandas as pd                                       
 from datetime import timedelta                           
 from oandapyV20 import API                                
@@ -15,6 +16,12 @@ import statsmodels.stats.diagnostic as stm
 from statsmodels.tsa.stattools import adfuller, kpss
 from statsmodels.tsa.seasonal import seasonal_decompose
 
+=======
+import pandas as pd                                       # dataframes y utilidades
+from datetime import timedelta                            # diferencia entre datos tipo tiempo
+from oandapyV20 import API                                # conexion con broker OANDA
+import oandapyV20.endpoints.instruments as instruments    # informacion de precios historicos
+>>>>>>> master
 global grupos
 global escenarios
 global tpp
@@ -23,7 +30,10 @@ global operacion
 import numpy as np
 global volumen
 global a
+<<<<<<< HEAD
 
+=======
+>>>>>>> master
 # -- --------------------------------------------------------- FUNCION: Descargar precios -- #
 # -- Descargar precios historicos con OANDA
 
@@ -179,11 +189,18 @@ def f_precios_masivos(p0_fini, p1_ffin, p2_gran, p3_inst, p4_oatk, p5_ginc):
 
 
   
+<<<<<<< HEAD
 #-------------------------------------------------------------------------------------------------------------------------------------------------
 def metricas():
     global escenarios
     escenarios=[]  # crear lista para guardar escenarios por publicacion de indice 
   
+=======
+
+def metricas():
+    global escenarios
+    escenarios=[]  # crear lista para guardar escenarios por publicacion de indice 
+>>>>>>> master
     df_data = pd.read_csv('../PROYECTO_LARP/Indice.csv')
     for i in range (0,len(df_data)): # crear for para evaluar el tipo de escenario 
         
@@ -250,7 +267,11 @@ def metricas():
         min_l=min(l_l)
         ct=l_ct[-1]
         ot=l_ot[0]
+<<<<<<< HEAD
         res=ot-ct
+=======
+        res=ct-ot
+>>>>>>> master
         if res >= 0:
             direccion.append(res*10000)
         else:
@@ -273,7 +294,11 @@ def metricas():
                                columns=("Timestamp","Escenarios","Direccion","Pip_alcistas","Pip_bajistas","Volatilidad"))
     return df_escenario
 
+<<<<<<< HEAD
  #-------------------------------------------------------------------------------------------------------------------------------------------------   
+=======
+    
+>>>>>>> master
 def deciciones(): # funcion para crear df_deciciones
     global operacion
     operacion=[]
@@ -312,7 +337,11 @@ def deciciones(): # funcion para crear df_deciciones
     return df_deciciones
 
 
+<<<<<<< HEAD
 #-------------------------------------------------------------------------------------------------------------------------------------------------
+=======
+
+>>>>>>> master
 def df_backtest(): # funcion para crear df_backtest
     resultado=[]
     pips=[]
@@ -415,6 +444,7 @@ def df_backtest(): # funcion para crear df_backtest
     df_backtest=pd.DataFrame(list(zip(a,escenarios,operacion,volumen,resultado,pips,capital,capital_acm)),
                              columns=("Timestamp","Escenario","Operacion","Volumen","Resultado","Pips","Capital","Capital_acm"))
     return df_backtest 
+<<<<<<< HEAD
 #-------------------------------------------------------------------------------------------------------------------------------------------------- 
 ## imprimir grafica de serie de tiempo, autocorrelacion y autocorrelacion parcial  
 def autoc_autocp():
@@ -548,6 +578,8 @@ def esta_lidad():
 
 
 
+=======
+>>>>>>> master
 
     
 
