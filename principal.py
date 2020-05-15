@@ -1,4 +1,7 @@
+# -*- coding: utf-8 -*-
+"""
+Created on Sun Apr 26 16:25:56 2020
 
-import funciones as fn 
+@author: Usuario
+"""
 
-fn.esta_lidad()
