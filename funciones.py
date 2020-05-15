@@ -509,11 +509,10 @@ def esta_lidad():
 #----------------------------------------------------------------------------------------------------------------------------------------------------
 # optimizacion 
 
-    "Parameters"
-    "----------"
-    "stoploss"
-   " takeprofit"
-   " volume"
+"Parameters"
+"stoploss"
+" takeprofit"
+" volume"
 
 
 
